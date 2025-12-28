@@ -2,7 +2,7 @@
 
 A production-quality matching engine implementing **Price-Time Priority (FIFO)** algorithm based on comprehensive academic research and industry best practices.
 
-## 📚 Research Foundation
+## Research Foundation
 
 This implementation is based on analysis of 20+ research papers including:
 
@@ -23,7 +23,7 @@ This implementation is based on analysis of 20+ research papers including:
 - **The Bw-Tree** (2013) - Latch-free ordered indexes
 - **Disruptor** (2011) - Event pipeline architecture
 
-## 🎯 Algorithm: Price-Time Priority (FIFO)
+##  Algorithm: Price-Time Priority (FIFO)
 
 **Why this algorithm?**
 - Used by NYSE, NASDAQ, Coinbase, Binance
@@ -50,7 +50,7 @@ These guarantees are **critical** and maintained at all times:
 
 These invariants ensure fairness, correctness, and auditability - essential properties validated by research (NEMO spec, Limit Order Books survey).
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌──────────────────┐
@@ -79,7 +79,7 @@ These invariants ensure fairness, correctness, and auditability - essential prop
 └──────────────────────────────┘
 ```
 
-### Data Structures (Research-Optimized)
+### Data Structures 
 
 ```python
 OrderBook {
@@ -101,7 +101,7 @@ PriceLevel {
 - Get best bid/ask: O(1)
 - Match order: O(k) where k = price levels crossed
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.11+
@@ -226,7 +226,7 @@ Example message:
 }
 ```
 
-## 🎨 Features
+##  Features
 
 ### Core Matching Engine
 ✅ Price-Time Priority (FIFO) algorithm  
@@ -255,7 +255,7 @@ Example message:
 
 
 
-## 🧪 Testing
+##  Testing
 
 ### Manual Testing
 
@@ -278,7 +278,7 @@ curl -X POST http://localhost:8000/orders \
 
 
 
-## 📖 References
+## References
 
 ### Core Papers
 1. "Price-Time Priority and Pro-Rata Matching in an Order Book Model" (2010)
