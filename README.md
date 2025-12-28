@@ -142,7 +142,7 @@ UI will be available at `http://localhost:3000`
 3. Submit buy/sell orders using the form
 4. Watch real-time order book and trade updates
 
-## 📡 API Documentation
+##  API Documentation
 
 ### REST Endpoints
 
