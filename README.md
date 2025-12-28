@@ -253,106 +253,7 @@ Example message:
 ✅ Event-driven architecture  
 ✅ Target: 50K-100K orders/second  
 
-## 🔬 Design Rationale (Research-Based)
 
-### Why Price-Time Priority?
-**Research consensus:** All 11+ papers agree this is the industry standard.
-
-**Advantages:**
-- Simple and deterministic
-- Fair to all participants
-- Used by major exchanges worldwide
-- Easy to audit and verify
-- Proven to scale (NASDAQ: 2M orders/sec)
-
-**vs Pro-Rata:**
-- Pro-rata is more complex
-- Better for derivatives/futures
-- Encourages gaming (penny jumping)
-- Not needed for general-purpose system
-
-### Why Python?
-**Research papers** focus on algorithms, not language.
-
-**Our choice:**
-- Rapid development and iteration
-- Rich ecosystem (FastAPI, sortedcontainers)
-- Can achieve 50K-100K orders/sec (sufficient for demo)
-- Easy to understand and maintain
-- Production uses: Robinhood (parts), many quant firms
-
-**When to use C++/Rust:**
-- Ultra-low latency required (<10μs)
-- Co-located trading
-- Millions of orders/second
-- Hardware optimization needed
-
-### Why These Data Structures?
-
-**SortedDict (Red-Black Tree):**
-- Research: Standard in all papers (CoinTossX, Concurrent Order Book)
-- O(log n) operations
-- Always maintains sorted order
-- Best bid/ask at front (O(1) access)
-
-**HashMap for order lookup:**
-- Research: Required for O(1) cancellation
-- 70%+ of messages are cancellations (HFT research)
-- Critical for performance
-
-**FIFO Queue at price level:**
-- Research: Implements "time priority"
-- Deque provides O(1) append/pop
-- Standard in all price-time implementations
-
-### Why Event-Driven Architecture?
-
-**Research:** Disruptor pattern (2011), Scalable Exchange paper (2024)
-
-**Benefits:**
-- Decouples matching from I/O
-- Easy to add subscribers (logging, analytics)
-- Supports replay for testing
-- Natural fit for WebSocket broadcasting
-- Enables event sourcing (auditability)
-
-### Failure Modes & Limitations
-
-**Durability trade-off:** If the process crashes mid-match, the in-memory state is lost; durability is intentionally out of scope for this implementation. Production matching engines typically use write-ahead logging (WAL) or replicated state machines (Raft, Paxos) to ensure no trades are lost. This design prioritizes simplicity and performance for educational/prototyping use cases. For production deployment, consider adding persistent event sourcing (see Future Enhancements).
-
-## 📊 Performance Targets
-
-Based on research and tech stack:
-
-| Metric | Target | Notes |
-|--------|--------|-------|
-| Order submission | < 1ms | FastAPI + in-memory |
-| Order-to-execution | < 5ms | Python matching |
-| WebSocket latency | < 10ms | Batched updates |
-| Throughput | 50K-100K orders/sec | Single-threaded |
-| Concurrent users | 1000+ | WebSocket connections |
-
-### Benchmark Results
-
-Synthetic benchmark on development hardware:
-
-| Environment | Orders/sec | p50 Latency | p99 Latency | Symbols |
-|-------------|-----------|-------------|-------------|----------|
-| M2 MacBook Pro, Python 3.11 | 32,000 | 1.2 ms | 4.7 ms | 2 |
-| M2 MacBook Pro, Python 3.11 | 28,500 | 1.5 ms | 6.1 ms | 5 |
-
-**Test methodology:** Mixed limit/market orders with realistic price distributions. Performance scales linearly with number of symbols (independent order books). Real-world performance depends on order complexity, book depth, and system load.
-
-**Comparison to Research:**
-- CoinTossX (C++): 1M+ orders/sec
-- Concurrent Order Book: 5M ops/sec (lock-free)
-- Real exchanges: NASDAQ 2M, CME 100M msg/day
-
-**Our target is sufficient for:**
-- Educational purposes
-- Medium-scale trading platforms
-- Prototype/MVP systems
-- Research and experimentation
 
 ## 🧪 Testing
 
@@ -375,44 +276,7 @@ curl -X POST http://localhost:8000/orders \
   }'
 ```
 
-### Automated Tests (TODO)
 
-```bash
-# Unit tests
-pytest tests/test_orderbook.py
-pytest tests/test_matching_engine.py
-
-# Integration tests
-pytest tests/test_api.py
-
-# Load tests
-pytest tests/test_performance.py
-```
-
-## 🔮 Future Enhancements
-
-### Performance Optimizations
-- [ ] Lock-free data structures (Concurrent Order Book paper)
-- [ ] Symbol sharding (CloudEx paper)
-- [ ] Batch market data updates (Disruptor pattern)
-- [ ] Critical path in Cython/Rust
-- [ ] Binary protocols (MessagePack, Protobuf)
-
-### Features
-- [ ] Additional order types (Stop, Iceberg, FOK, IOC)
-- [ ] Pro-rata matching option
-- [ ] Self-trade prevention
-- [ ] Order modification (cancel-replace)
-- [ ] Persistence (WAL, event sourcing)
-- [ ] User accounts and positions
-- [ ] Risk management (limits, circuit breakers)
-
-### Infrastructure
-- [ ] Kubernetes deployment
-- [ ] Prometheus metrics
-- [ ] Grafana dashboards
-- [ ] Distributed tracing
-- [ ] Replication (Microsecond Consensus paper)
 
 ## 📖 References
 
@@ -433,25 +297,6 @@ pytest tests/test_performance.py
 10. "Disruptor: High Performance Alternative to Bounded Queues" (2011)
 11. "Microsecond Consensus for Microsecond Applications" (2020)
 
-## 📄 License
-
-MIT License - See LICENSE file
-
-## 👥 Contributing
-
-This is a research-based educational project. Contributions welcome!
-
-Areas for contribution:
-- Performance optimizations
-- Additional order types
-- Testing and benchmarking
-- Documentation improvements
-- UI/UX enhancements
-
-## 📧 Contact
-
-For questions about the implementation or research basis, please open an issue.
 
 ---
 
-**Built with research-backed best practices for educational and prototyping purposes.**
