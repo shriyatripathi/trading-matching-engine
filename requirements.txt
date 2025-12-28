@@ -1,0 +1,28 @@
+# Core dependencies for the matching engine
+# Based on research: Python with FastAPI for rapid development with good performance
+
+# Web framework and async support
+fastapi>=0.100.0
+uvicorn[standard]>=0.27.0
+# uvloop==0.19.0  # Temporarily disabled - build issues with Python 3.13
+
+# WebSocket support for real-time market data
+python-socketio>=5.11.0
+websockets>=12.0
+
+# Data structures (research: optimal for order book)
+sortedcontainers>=2.4.0  # C-optimized sorted dict for price levels
+
+# Data validation
+pydantic>=2.6.0
+
+# CORS support
+python-multipart==0.0.6
+
+# Optional: for production deployments
+# gunicorn==21.2.0
+
+# Development dependencies
+pytest==7.4.3
+pytest-asyncio==0.23.3
+httpx==0.26.0  # For testing async FastAPI
